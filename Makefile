@@ -23,10 +23,13 @@ clean:
 
 .PHONY: install
 install: $(MODNAME)
-	install -d $(DESTDIR)/usr/lib/freeswitch/mod
-	install $(MODNAME) $(DESTDIR)/usr/lib/freeswitch/mod
-	install -d $(DESTDIR)/etc/freeswitch/autoload_configs
-	install event_kafka.conf.xml $(DESTDIR)/etc/freeswitch/autoload_configs/
+	#install -d $(DESTDIR)/usr/lib/freeswitch/mod
+	#install $(MODNAME) $(DESTDIR)/usr/lib/freeswitch/mod
+	#install -d $(DESTDIR)/etc/freeswitch/autoload_configs
+	#install event_kafka.conf.xml $(DESTDIR)/etc/freeswitch/autoload_configs/
+	#Changed the target path as per xbp-freeswitch deployment
+	install -d /usr/local/freeswitch/mod/
+	install $(MODNAME) /usr/local/freeswitch/mod/
 
 .PHONY: release
 release: $(MODNAME)
