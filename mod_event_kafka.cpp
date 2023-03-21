@@ -168,8 +168,8 @@ namespace mod_event_kafka {
                 if (resp == -1){
                     switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, "Failed to produce, with error %s \n", rd_kafka_err2str(rd_kafka_last_error()));
                 } else {
-                    //size_t len = strlen(event_json);
-                    //switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_DEBUG,"Produced message (%zu bytes)", len);
+                    size_t len = strlen(event_json);
+                    switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_DEBUG,"Produced message (%zu bytes)", len);
                 }
                 rd_kafka_poll(producer, 0);
             } else {
