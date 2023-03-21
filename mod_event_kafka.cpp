@@ -86,7 +86,7 @@ namespace mod_event_kafka {
 
             switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_INFO, "KafkaEventPublisher Initialising...");
 
-            load_config(SWITCH_TRUE);
+            load_config(SWITCH_FALSE);
             
             conf = rd_kafka_conf_new();
 
