@@ -47,6 +47,10 @@ namespace mod_event_kafka {
     }
 
     static switch_xml_config_item_t instructions[] = {
+        SWITCH_CONFIG_ITEM("debug", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.debug,
+                            "", NULL, "debug", "Kafka Debug contexts"),
+        SWITCH_CONFIG_ITEM("log_level", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.log_level,
+                            "6", NULL, "log_level", "Kafka Logging level (0..7)"),
         SWITCH_CONFIG_ITEM("bootstrap-servers", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.brokers,
                             "localhost:9092", NULL, "bootstrap-servers", "Kafka Bootstrap Brokers"),
         SWITCH_CONFIG_ITEM("username", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.username, "", NULL, "username", "Username"),
@@ -90,8 +94,18 @@ namespace mod_event_kafka {
             
             conf = rd_kafka_conf_new();
 
+            if (globals.debug && globals.debug[0] != '\0') {
+                if (rd_kafka_conf_set(conf, "debug", globals.debug, errstr, sizeof(errstr)) != RD_KAFKA_CONF_OK) {
+                    switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, errstr);
+                }
+            }
+
+            if (rd_kafka_conf_set(conf, "log_level", globals.log_level, errstr, sizeof(errstr)) != RD_KAFKA_CONF_OK) {
+                switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, errstr);
+            }
+
             if (rd_kafka_conf_set(conf, "metadata.broker.list", globals.brokers, errstr, sizeof(errstr)) != RD_KAFKA_CONF_OK) {
-               switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, errstr);
+                switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, errstr);
             }
 
             if (rd_kafka_conf_set(conf, "queue.buffering.max.messages", std::to_string(globals.buffer_size).c_str(), errstr, sizeof(errstr)) != RD_KAFKA_CONF_OK) {
@@ -126,6 +140,7 @@ namespace mod_event_kafka {
             }
 
             rd_kafka_conf_set_dr_msg_cb(conf, dr_msg_cb);
+            rd_kafka_conf_set_log_cb(conf, log_cb);
 
             producer = rd_kafka_new(RD_KAFKA_PRODUCER, conf, errstr, sizeof(errstr));
             if (!producer) {
@@ -199,6 +214,12 @@ namespace mod_event_kafka {
             else {
                 switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_DEBUG,  "Message delivered (%zd bytes, partition %d, offset  %" PRId64 ") \n",rkmessage->len, rkmessage->partition, rkmessage->offset);
                 // rd_kafka_message_destroy ((rd_kafka_message_t *)rkmessage);
+            }
+        }
+
+        static void log_cb (const rd_kafka_t *rk, int level, const char *fac, const char *buf) {
+            if (buf && buf[0] != '\0') {
+                switch_log_printf(SWITCH_CHANNEL_LOG, (switch_log_level_t)level, "KafkaLog: %s \n", buf);
             }
         }
 

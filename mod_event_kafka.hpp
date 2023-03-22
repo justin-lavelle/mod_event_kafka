@@ -8,6 +8,8 @@ extern "C" {
 namespace mod_event_kafka {
 
 	static struct {
+		char *debug;
+		char *log_level;
 		char *brokers;
 		char *topic_prefix;
 		char *topic;
