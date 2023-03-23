@@ -1,12 +1,22 @@
 <configuration name="event_kafka.conf" description="Kafka Event Configuration">
 	<settings>
-		<param name="bootstrap-servers" value="localhost:9092"/>
-		<param name="topic-prefix" value="topic_prefix"/>
+		<param name="bootstrap-servers" value="localhost:9092" />
+		<param name="topic-prefix" value="topic_prefix" />
 		<param name="topic" value="" />  <!-- set either topic-prefix or topic, incase both are defined topic value would be used. -->
 		<param name="username" value="" /> <!-- set it only if you have sasl enabled on your kafka cluster -->
 		<param name="password" value="" />
 		<param name="buffer-size" value="16" /> 
-		<param name="compression" value="snappy"/>
-		<param name="event-filter" value=""/> <!-- set it to a valid list of events if you want to filter. Default empty doesn't filter any event -->
+		<param name="compression" value="snappy" />
+		<param name="event-filter" value="" /> <!-- set it to a valid list of events if you want to filter. Default empty doesn't filter any event -->
+		<!-- 
+			Debug enable selected contexts as CSV selection
+			"all,generic,broker,topic,metadata,queue,msg,protocol,cgrp,security,fetch,feature"
+		-->
+		<!-- <param name="debug" value="" /> -->
+		<!-- 
+			Kafka Logging level syslog(3) levels (0..7) 
+			0=EMERGENCY, 1=ALERT, 2=CRITICAL, 3=ERROR, 4=WARNING, 5=NOTICE, 6=INFORMATIONAL, 7=DEBUG
+		-->
+		<!-- <param name="log_level" value="6" /> -->
 	</settings>
  </configuration>
