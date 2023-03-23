@@ -7,7 +7,11 @@
 		<param name="password" value="" />
 		<param name="buffer-size" value="16" /> 
 		<param name="compression" value="snappy" />
-		<param name="event-filter" value="" /> <!-- set it to a valid list of events if you want to filter. Default empty doesn't filter any event -->
+		<!-- 
+			Set it to a CSV list of events if you want to filter. Default empty doesn't filter any event.
+			For CUSTOM event to filter on their SubClass prefix with 'SWITCH_EVENT_CUSTOM::' e.g. 'SWITCH_EVENT_CUSTOM::my_event'
+		-->
+		<param name="event-filter" value="" /> 
 		<!-- 
 			Debug enable selected contexts as CSV selection
 			"all,generic,broker,topic,metadata,queue,msg,protocol,cgrp,security,fetch,feature"
