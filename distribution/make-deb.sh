@@ -4,7 +4,7 @@ set -ex
 BUILD_ROOT=$(mktemp -d)
 NAME=mod-event-kafka
 SUB_VERSION=$(git rev-list --count HEAD)
-VERSION=3.0.13-${SUB_VERSION}
+VERSION=$(shell cat VERSION)-${SUB_VERSION}
 ARCH=$(dpkg --print-architecture)
 
 make
