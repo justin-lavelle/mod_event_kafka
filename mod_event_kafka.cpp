@@ -53,8 +53,12 @@ namespace mod_event_kafka {
                             "6", NULL, "log_level", "Kafka Logging level (0..7)"),
         SWITCH_CONFIG_ITEM("bootstrap-servers", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.brokers,
                             "localhost:9092", NULL, "bootstrap-servers", "Kafka Bootstrap Brokers"),
-        SWITCH_CONFIG_ITEM("username", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.username, "", NULL, "username", "Username"),
-        SWITCH_CONFIG_ITEM("password", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.password, "", NULL, "password", "Password"),
+        SWITCH_CONFIG_ITEM("username", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.username,
+                            "", NULL, "username", "Username"),
+        SWITCH_CONFIG_ITEM("password", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.password,
+                            "", NULL, "password", "Password"),
+        SWITCH_CONFIG_ITEM("security-protocol", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.security_protocol,
+                            "PLAINTEXT", NULL, "security_protocol", "security_protocol"),
         SWITCH_CONFIG_ITEM("topic", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.topic,
                             "", NULL, "topic", "Kafka Topic"),
         SWITCH_CONFIG_ITEM("topic-prefix", SWITCH_CONFIG_STRING, CONFIG_RELOADABLE, &globals.topic_prefix,
@@ -126,7 +130,7 @@ namespace mod_event_kafka {
                     switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, errstr);
                 }
 
-                if (rd_kafka_conf_set(conf, "security.protocol", "SASL_SSL", errstr, sizeof(errstr)) != RD_KAFKA_CONF_OK) {
+                if (rd_kafka_conf_set(conf, "security.protocol", globals.security_protocol, errstr, sizeof(errstr)) != RD_KAFKA_CONF_OK) {
                     switch_log_printf(SWITCH_CHANNEL_LOG, SWITCH_LOG_ERROR, errstr);
                 }
 

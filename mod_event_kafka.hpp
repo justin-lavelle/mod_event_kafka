@@ -15,6 +15,7 @@ namespace mod_event_kafka {
 		char *topic;
 		char *username;
 		char *password;
+		char *security_protocol;
 		int buffer_size;
 		char *compression;
 		char *event_filter;
