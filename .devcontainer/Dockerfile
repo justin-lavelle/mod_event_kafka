@@ -3,7 +3,7 @@
 # Licensed under the MIT License. See https://go.microsoft.com/fwlink/?linkid=2090316 for license information.
 #-------------------------------------------------------------------------------------------------------------
 
-FROM debian:9
+FROM debian:bullseye
 
 # https://signalwire.com/docs/signalwire-cli/installation/
 ARG SIGNALWIRE_TOKEN=GenerateYourOwnToken 
@@ -22,7 +22,11 @@ RUN echo "machine freeswitch.signalwire.com login signalwire password $SIGNALWIR
 RUN echo "deb https://freeswitch.signalwire.com/repo/deb/freeswitch-1.8/ `lsb_release -sc` main" > /etc/apt/sources.list.d/freeswitch.list
 RUN echo "deb-src https://freeswitch.signalwire.com/repo/deb/freeswitch-1.8/ `lsb_release -sc` main" >> /etc/apt/sources.list.d/freeswitch.list
 
-RUN apt-get update && apt-get -y install libfreeswitch-dev librdkafka-dev libz-dev libssl-dev
+RUN apt-get update
+RUN apt-get -y installsoftware-properties-common
+RUN add-apt-repository "deb [arch=amd64] https://packages.confluent.io/deb/7.3 stable main"
+RUN add-apt-repository "deb https://packages.confluent.io/clients/deb $(lsb_release -cs) main"
+RUN apt-get -y install libfreeswitch-dev librdkafka-dev libz-dev libssl-dev
 
 # Clean up
 RUN apt-get autoremove -y \
